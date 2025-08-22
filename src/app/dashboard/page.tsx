@@ -42,6 +42,7 @@ import GiftCodeSection from '@/components/dashboard/gift-code-section';
 import ReferralSection from '@/components/dashboard/referral-section';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
 
 interface UserData {
@@ -322,16 +323,24 @@ export default function DashboardPage() {
     <main className="flex min-h-screen flex-col items-center bg-background pb-24">
       <div className="w-full max-w-4xl p-4 pt-12">
         {showAnnouncement && announcement && (
-            <Alert className="mb-4 relative bg-primary/10 border-primary/20 text-foreground">
-                <Megaphone className="h-4 w-4" />
-                <AlertTitle className="font-bold text-primary">{announcement.title}</AlertTitle>
-                <AlertDescription>
-                    {announcement.message}
-                </AlertDescription>
-                <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-6 w-6" onClick={() => setShowAnnouncement(false)}>
-                   <X className="h-4 w-4" />
-                </Button>
-            </Alert>
+            <Dialog open={showAnnouncement} onOpenChange={setShowAnnouncement}>
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 mb-4">
+                            <Megaphone className="h-10 w-10 text-primary" />
+                        </div>
+                        <DialogTitle className="text-center text-2xl">{announcement.title}</DialogTitle>
+                    </DialogHeader>
+                    <div className="py-4 text-center text-muted-foreground">
+                        {announcement.message}
+                    </div>
+                    <DialogFooter className="sm:justify-center">
+                        <Button type="button" onClick={() => setShowAnnouncement(false)}>
+                            Cerrar
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         )}
 
         {(supportLinks?.whatsappContactUrl || supportLinks?.whatsappGroupUrl) && (
@@ -445,3 +454,5 @@ export default function DashboardPage() {
     </main>
   );
 }
+
+    
