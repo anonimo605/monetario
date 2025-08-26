@@ -86,7 +86,7 @@ export default function DashboardPage() {
 
    useEffect(() => {
     const fetchConfig = async () => {
-        if(!user) return;
+        if(!user || authLoading) return;
 
         try {
             // Fetch QR Code
@@ -124,8 +124,10 @@ export default function DashboardPage() {
         }
     };
     
-    fetchConfig();
-   }, [user, toast]);
+    if(!authLoading) {
+      fetchConfig();
+    }
+   }, [user, authLoading, toast]);
 
 
   const handleLogout = async () => {
@@ -209,7 +211,7 @@ export default function DashboardPage() {
               {rechargeStep === 'selection' && (
                 <div className="space-y-4">
                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                        {[40000, 80000, 160000, 320000, 500000, 1000000].map((amount) => (
+                        {[30000, 80000, 160000, 320000, 500000, 1000000].map((amount) => (
                              <Button key={amount} variant="outline" className="h-16 text-lg" onClick={() => handleRechargeAmountSelection(amount)}>
                                 ${amount.toLocaleString('es-CO')}
                             </Button>
@@ -379,7 +381,7 @@ export default function DashboardPage() {
             <Separator />
             <CardContent className="p-4">
                 <div className="flex items-center gap-4">
-                    <Avatar className="h-16 w-16">
+                    <Avatar className="h-16 w-16 bg-primary text-primary-foreground">
                         <AvatarFallback className="bg-primary text-primary-foreground">
                             <UserIcon className="h-8 w-8" />
                         </AvatarFallback>
