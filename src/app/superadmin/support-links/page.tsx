@@ -15,22 +15,26 @@ import { ArrowLeft, Save } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { useAuth } from '@/hooks/use-auth';
 
 
 const supportLinksFormSchema = z.object({
     whatsappContactUrl: z.string().url("Debe ser una URL válida (ej. https://wa.me/...).").or(z.literal('')),
     whatsappGroupUrl: z.string().url("Debe ser una URL válida (ej. https://chat.whatsapp.com/...).").or(z.literal('')),
+    telegramGroupUrl: z.string().url("Debe ser una URL válida (ej. https://t.me/...).").or(z.literal('')),
 });
 
 export default function SupportLinksPage() {
     const router = useRouter();
     const { toast } = useToast();
+    const { user } = useAuth();
 
     const form = useForm<z.infer<typeof supportLinksFormSchema>>({
         resolver: zodResolver(supportLinksFormSchema),
         defaultValues: {
             whatsappContactUrl: '',
             whatsappGroupUrl: '',
+            telegramGroupUrl: '',
         },
     });
 
@@ -42,8 +46,10 @@ export default function SupportLinksPage() {
                  form.reset(docSnap.data());
              }
         }
-        fetchSupportLinks();
-    }, [form]);
+        if (user?.role === 'superadmin') {
+            fetchSupportLinks();
+        }
+    }, [form, user]);
 
 
     const onSubmit = async (values: z.infer<typeof supportLinksFormSchema>) => {
@@ -112,6 +118,25 @@ export default function SupportLinksPage() {
                                             <FormControl>
                                                 <Input
                                                     placeholder="https://chat.whatsapp.com/..."
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="telegramGroupUrl"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>URL del Grupo de Telegram</FormLabel>
+                                            <FormDescription>
+                                                Ejemplo: https://t.me/MyTelegramGroup
+                                            </FormDescription>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="https://t.me/..."
                                                     {...field}
                                                 />
                                             </FormControl>
