@@ -56,6 +56,7 @@ export interface WithdrawalSettings {
 export interface SupportLinks {
     whatsappContactUrl: string;
     whatsappGroupUrl: string;
+    telegramGroupUrl?: string;
 }
 
 export interface Satellite {
