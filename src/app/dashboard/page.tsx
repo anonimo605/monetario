@@ -361,7 +361,7 @@ export default function DashboardPage() {
                      {supportLinks.whatsappGroupUrl && (
                         <Button className="w-full" size="sm" variant="secondary" onClick={() => openLink(supportLinks.whatsappGroupUrl)}>
                             <UserPlus className="mr-2 h-4 w-4"/>
-                            Unirse al Grupo
+                            Unirse a WhatsApp
                         </Button>
                     )}
                     {supportLinks.telegramGroupUrl && (
