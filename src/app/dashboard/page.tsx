@@ -25,7 +25,8 @@ import {
   UserPlus,
   Coins,
   Gift,
-  History
+  History,
+  Send
 } from 'lucide-react';
 import { doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp, Timestamp, query, where, getDocs } from 'firebase/firestore';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -345,12 +346,12 @@ export default function DashboardPage() {
             </Dialog>
         )}
 
-        {(supportLinks?.whatsappContactUrl || supportLinks?.whatsappGroupUrl) && (
+        {(supportLinks?.whatsappContactUrl || supportLinks?.whatsappGroupUrl || supportLinks?.telegramGroupUrl) && (
             <Card className="mb-4">
                 <CardHeader className="p-4">
                     <CardTitle className="flex items-center text-lg"><LifeBuoy className="mr-2 h-5 w-5"/>¿Necesitas Ayuda?</CardTitle>
                 </CardHeader>
-                <CardContent className="flex flex-col sm:flex-row gap-2 px-4 pb-4">
+                <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-2 px-4 pb-4">
                     {supportLinks.whatsappContactUrl && (
                          <Button className="w-full" size="sm" onClick={() => openLink(supportLinks.whatsappContactUrl)}>
                             <MessageSquare className="mr-2 h-4 w-4"/>
@@ -361,6 +362,12 @@ export default function DashboardPage() {
                         <Button className="w-full" size="sm" variant="secondary" onClick={() => openLink(supportLinks.whatsappGroupUrl)}>
                             <UserPlus className="mr-2 h-4 w-4"/>
                             Unirse al Grupo
+                        </Button>
+                    )}
+                    {supportLinks.telegramGroupUrl && (
+                        <Button className="w-full" size="sm" variant="secondary" onClick={() => openLink(supportLinks.telegramGroupUrl)}>
+                            <Send className="mr-2 h-4 w-4"/>
+                            Unirse a Telegram
                         </Button>
                     )}
                 </CardContent>
@@ -456,5 +463,3 @@ export default function DashboardPage() {
     </main>
   );
 }
-
-    
